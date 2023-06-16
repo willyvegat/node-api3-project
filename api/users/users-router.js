@@ -37,12 +37,17 @@ router.post('/', validateUser, (req, res, next) => {
     })
 });
 
-router.put('/:id', validateUserId, validateUser, (req, res) => {
+router.put('/:id', validateUserId, validateUser, (req, res, next) => {
   // RETURN THE FRESHLY UPDATED USER OBJECT
   // this needs a middleware to verify user id
   // and another middleware to check that the request body is valid
-  console.log(req.user);
-  console.log(req.name);
+  // console.log(req.user);
+  // console.log(req.name);
+  User.update(req.params.id, { name: req.name })
+  .then(userUpdated => {
+    res.json(userUpdated);
+  })
+  .catch(next);
 });
 
 router.delete('/:id', validateUserId, (req, res) => {
